@@ -1,8 +1,43 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { AuthPage } from './pages/auth/auth-page/auth-page';
+import { authGuard } from './core/guards/auth-guard';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
   {path: '', component: Home},
-  {path: 'auth', component: AuthPage}
+  {path: 'auth', component: AuthPage},
+  {
+  path: 'admin/dashboard',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: ['ADMIN'] },
+  loadComponent: () =>
+    import('./pages/admin/admin-dashboard/admin-dashboard')
+      .then(m => m.AdminDashboard)
+},
+{
+  path: 'manager/dashboard',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: ['MANAGER'] },
+  loadComponent: () =>
+    import('./pages/manager/manager-dashboard/manager-dashboard')
+      .then(m => m.ManagerDashboard)
+},
+{
+  path: 'receptionist/dashboard',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: ['RECEPTIONIST'] },
+  loadComponent: () =>
+    import('./pages/receptionist/receptionist-dashboard/receptionist-dashboard')
+      .then(m => m.ReceptionistDashboard)
+},
+{
+  path: 'guest/dashboard',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: ['GUEST'] },
+  loadComponent: () =>
+    import('./pages/guest/guest-dashboard/guest-dashboard')
+      .then(m => m.GuestDashboard)
+}
+
 ];

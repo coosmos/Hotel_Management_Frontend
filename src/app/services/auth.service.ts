@@ -18,12 +18,11 @@ export class AuthService {
   switch (role) {
     case 'ADMIN':
       console.log('admin');
-      this.router.navigate(['/']);
-      //this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin/dashboard']);
       break;
     case 'MANAGER':
       console.log('manager');
-      //this.router.navigate(['/manager/dashboard']);
+      this.router.navigate(['/manager/dashboard']);
       break;
     case 'RECEPTIONIST':
       this.router.navigate(['/receptionist/dashboard']);

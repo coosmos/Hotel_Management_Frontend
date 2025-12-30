@@ -6,3 +6,5 @@
 | 2025-12-30 | Auth | Login | Implemented login functionality. |
 | 2025-12-31 | Fix | Navbar | Fixed `*ngIf` not working by importing `CommonModule`. Now displays user after login. |
 | 2025-12-31 | Fix | Navbar CSS | Fixed `.welcome` text color on hover and improved styling consistency. |
+| 2025-12-31 | Feature | Auth Guards | Created `auth-guard.ts` and `role-guard.ts` for route protection. |
+| 2025-12-31 | Fix | Role Guard | Added safety check for undefined `roles` in `role-guard.ts`. |
