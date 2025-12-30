@@ -22,11 +22,11 @@ export class LoginForm {
     this.error = '';
 
     this.auth.login(this.form).subscribe({
-      next: (res) => {
-        this.auth.handlePostLogin(res);
+      next: (response) => {
+        this.auth.handlePostLogin(response);
       },
-      error: (err) => {
-        this.error = err.error?.message || 'Login failed';
+      error: (error) => {
+        this.error = error.error?.message || 'Login failed';
         this.loading = false;
       }
     });

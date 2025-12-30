@@ -1,0 +1,39 @@
+form { max-width: 360px; }
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 24px;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.error {
+  font-size: 13px;
+  color: #c0392b;
+  margin-bottom: 8px;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+}
+
+input.ng-valid.ng-touched {
+  border-color: #2ecc71;
+}
+
+.success {
+  margin-top: 12px;
+  color: #27ae60;
+  font-size: 14px;
+}

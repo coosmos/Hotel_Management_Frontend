@@ -1,0 +1,30 @@
+<form (ngSubmit)="register()" #f="ngForm">
+    <input name="fullname" [(ngModel)]="form.fullName" placeholder="Full Name" required
+    minlength="3" pattern="^[A-Za-z]+$" #fullName="ngModel">
+    <div class="error" *ngIf="fullName.invalid && fullName.touched">
+        Full name must contain only letters 
+    </div>
+    <input name="username" [(ngModel)]="form.username" placeholder="Username" required
+    minlength="3" #username="ngModel">
+    <div class="error" *ngIf="username.invalid && username.touched">
+        Username must be at least 3 characters long
+    </div>
+    <input name="email" [(ngModel)]="form.email" placeholder="Email" required #email="ngModel">
+    <div class="error" *ngIf="email.invalid && email.touched">
+        Please enter a valid email address
+    </div>
+    <input name="password" [(ngModel)]="form.password" placeholder="Password" required #password="ngModel">
+    <div class="error" *ngIf="password.invalid && password.touched">
+        Password must be at least 8 characters long
+    </div>
+    <input name="phoneNumber" [(ngModel)]="form.phoneNumber" placeholder="Phone Number" required
+    pattern="^[0-9]{10}$" #phoneNumber="ngModel">
+    <div class="error" *ngIf="phoneNumber.invalid && phoneNumber.touched">
+        Please enter a valid phone number
+    </div>
+    <button type="submit" [disabled]="loading|| f.invalid">
+        {{loading?'Creating account...':'Register'}}
+    </button>
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="success" *ngIf="success">{{ success }}</div>
+</form>
