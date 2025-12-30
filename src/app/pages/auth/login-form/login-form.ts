@@ -23,7 +23,7 @@ export class LoginForm {
 
     this.auth.login(this.form).subscribe({
       next: (res) => {
-        this.auth.handlePostLogin(res.token);
+        this.auth.handlePostLogin(res);
       },
       error: (err) => {
         this.error = err.error?.message || 'Login failed';

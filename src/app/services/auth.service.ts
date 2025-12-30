@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api = '/api/auth';
+  private api = 'http://localhost:9090/api/auth';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -11,17 +11,25 @@ export class AuthService {
     return this.http.post<any>(`${this.api}/login`, payload);
   }
 
-  handlePostLogin(token: string) {
-    localStorage.setItem('token', token);
-    const { roles } = this.decode(token);
-
-    if (roles.includes('ROLE_ADMIN')) this.router.navigate(['/admin/dashboard']);
-    else if (roles.includes('ROLE_MANAGER')) this.router.navigate(['/manager/dashboard']);
-    else if (roles.includes('ROLE_RECEPTIONIST')) this.router.navigate(['/receptionist/dashboard']);
-    else this.router.navigate(['/guest/dashboard']);
+ handlePostLogin(response: any) {
+  localStorage.setItem('token', response.token);
+  localStorage.setItem('user', JSON.stringify(response.user));
+  const role = response.user.role;
+  switch (role) {
+    case 'ADMIN':
+      console.log('admin');
+      this.router.navigate(['/']);
+      //this.router.navigate(['/admin/dashboard']);
+      break;
+    case 'MANAGER':
+      console.log('manager');
+      //this.router.navigate(['/manager/dashboard']);
+      break;
+    case 'RECEPTIONIST':
+      this.router.navigate(['/receptionist/dashboard']);
+      break;
+    default:
+      this.router.navigate(['/guest/dashboard']);
   }
-
-  decode(token: string): any {
-    return JSON.parse(atob(token.split('.')[1]));
-  }
+}
 }
