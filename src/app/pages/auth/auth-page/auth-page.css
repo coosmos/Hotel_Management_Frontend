@@ -1,0 +1,36 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+}
+
+.auth-container {
+  width: 900px;
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  padding: 40px;
+}
+
+.auth-left,
+.auth-right {
+  flex: 1;
+}
+
+.divider {
+  width: 1px;
+  background: #e0e0e0;
+  margin: 0 40px;
+}
+
+h2 {
+  margin-bottom: 8px;
+}
+
+p {
+  margin-bottom: 24px;
+  color: #666;
+}
