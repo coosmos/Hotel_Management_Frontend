@@ -1,0 +1,22 @@
+form { max-width: 360px; }
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 24px;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+.error {
+  margin-top: 12px;
+  color: #c0392b;
+  font-size: 14px;
+}
