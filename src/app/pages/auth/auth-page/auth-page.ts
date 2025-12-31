@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { LoginForm } from "../login-form/login-form";
 import { RegisterForm } from "../register-form/register-form";
 
@@ -9,5 +9,9 @@ import { RegisterForm } from "../register-form/register-form";
   styleUrl: './auth-page.css',
 })
 export class AuthPage {
+  @ViewChild(LoginForm) loginForm!: LoginForm;
 
+  onRegisterSuccess() {
+    this.loginForm.focusUsername();
+  }
 }

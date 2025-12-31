@@ -1,10 +1,10 @@
 <div class="auth-wrapper">
   <div class="auth-container">
-    
+
     <div class="auth-left">
       <h2>Welcome Back</h2>
       <p>Login to continue</p>
-     <app-login-form></app-login-form>
+      <app-login-form></app-login-form>
     </div>
 
     <div class="divider"></div>
@@ -12,7 +12,7 @@
     <div class="auth-right">
       <h2>New Guest?</h2>
       <p>Create your account</p>
-     <app-register-form></app-register-form>
+      <app-register-form (onRegisterSuccess)="onRegisterSuccess()"></app-register-form>
       <!-- register form comes next step -->
     </div>
 

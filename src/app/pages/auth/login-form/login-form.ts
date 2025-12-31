@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
@@ -6,7 +6,7 @@ import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login-form',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
 })
@@ -15,7 +15,13 @@ export class LoginForm {
   loading = false;
   error = '';
 
-  constructor(private auth: AuthService) {}
+  @ViewChild('usernameInput') usernameInput!: ElementRef;
+
+  constructor(private auth: AuthService) { }
+
+  focusUsername() {
+    this.usernameInput.nativeElement.focus();
+  }
 
   login() {
     this.loading = true;
