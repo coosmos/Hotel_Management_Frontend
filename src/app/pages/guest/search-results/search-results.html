@@ -43,7 +43,7 @@
                         <div class="hotel-meta">
                             <span class="hotel-address">{{ hotel.address }}, {{ hotel.city }}</span>
                             <span class="separator" *ngIf="hotel.starRating">•</span>
-                            <span class="hotel-rating" >⭐5</span>
+                            <span class="hotel-rating">⭐5</span>
                         </div>
 
                         <p class="hotel-description">
@@ -63,8 +63,8 @@
                             <span class="info-value">{{ hotel.availableRoomsCount }} Rooms</span>
                         </div>
 
-                        <button class="select-btn">
-                            Select
+                        <button class="select-btn" (click)="viewHotelDetails(hotel.hotelId)">
+                            View Rooms & Book
                         </button>
                     </div>
                 </div>

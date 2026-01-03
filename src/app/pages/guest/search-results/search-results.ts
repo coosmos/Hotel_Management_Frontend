@@ -41,7 +41,14 @@ export class SearchResultsComponent implements OnInit {
       }
     });
   }
-
+  viewHotelDetails(hotelId: number): void {
+    this.router.navigate(['/hotel-details', hotelId], {
+      queryParams: {
+        checkIn: this.searchParams.checkInDate,
+        checkOut: this.searchParams.checkOutDate
+      }
+    });
+  }
   searchHotels(): void {
     this.loading = true;
     this.error = '';

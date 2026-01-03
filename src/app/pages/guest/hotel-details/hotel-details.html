@@ -1,0 +1,83 @@
+<div class="hotel-details-page">
+    <div class="container">
+        <div *ngIf="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading hotel details...</p>
+        </div>
+
+        <div *ngIf="error" class="error">
+            {{ error }}
+        </div>
+
+        <div *ngIf="hotel && !loading" class="hotel-content">
+            <!-- Hotel Header & Hero -->
+            <div class="hotel-header">
+                <div class="header-info">
+                    <h1>{{ hotel.hotelName }}</h1>
+                    <p class="location">📍 {{ hotel.address }}, {{ hotel.city }}, {{ hotel.state }} {{ hotel.pincode }}
+                    </p>
+                    <div class="rating" *ngIf="hotel.starRating">
+                        <span class="stars">⭐ {{ hotel.starRating }}/5</span>
+                    </div>
+                </div>
+                <div class="header-image" *ngIf="hotel.imageUrl">
+                    <img [src]="hotel.imageUrl" [alt]="hotel.hotelName">
+                </div>
+            </div>
+
+            <div class="description-section">
+                <h2>About this Hotel</h2>
+                <p>{{ hotel.description }}</p>
+
+                <div class="amenities-list" *ngIf="hotel.amenities">
+                    <h3>Amenities</h3>
+                    <div class="tags">
+                        <span class="tag" *ngFor="let amenity of hotel.amenities.split(',')">{{ amenity }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Types Section -->
+            <div class="rooms-section">
+                <h2>Select a Room</h2>
+                <div class="dates-summary">
+                    <p><strong>Check-in:</strong> {{ checkInDate | date }} <span class="divider">|</span>
+                        <strong>Check-out:</strong> {{ checkOutDate | date }}
+                    </p>
+                </div>
+
+                <div class="room-list">
+                    <div *ngFor="let room of roomTypes" class="room-card">
+                        <div class="room-image">
+                            <img src="assets/hotel-room1.jpg" alt="Room View">
+                        </div>
+                        <div class="room-info">
+                            <h3>{{ room.roomType }}</h3>
+                            <p class="bed-type" *ngIf="room.bedType">{{ room.bedType }}</p>
+                            <p class="room-desc">{{ room.description }}</p>
+                            <div class="room-amenities" *ngIf="room.amenities">
+                                <span *ngFor="let am of room.amenities.split(',')" class="small-tag">{{ am }}</span>
+                            </div>
+                            <p class="occupancy">Max Occupancy: {{ room.maxOccupancy }} guests</p>
+                        </div>
+
+                        <div class="room-pricing">
+                            <div class="price-display">
+                                <span class="amount">{{ room.pricePerNight | currency:'INR':'symbol':'1.0-0' }}</span>
+                                <span class="unit">/ night</span>
+                            </div>
+                            <p class="availability" [class.low]="room.availableCount < 3">
+                                {{ room.availableCount }} rooms left
+                            </p>
+                            <button class="book-btn" (click)="bookRoom(room)">Book Now</button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="roomTypes.length === 0" class="no-rooms">
+                        <p>No rooms available for these dates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

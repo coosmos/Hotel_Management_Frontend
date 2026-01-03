@@ -11,7 +11,7 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] },
     loadComponent: () =>
-      import('./pages/admin/admin-dashboard/admin-dashboard')
+      import('./pages/admin/admin-dashboard/admin-dashboard')// lazy loaded so admin stuff is not shipped to guest
         .then(m => m.AdminDashboard)
   },
   {
@@ -43,6 +43,18 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/guest/search-results/search-results')
         .then(m => m.SearchResultsComponent)
+  },
+  {
+    path: 'hotel-details/:hotelId',
+    loadComponent: () =>
+      import('./pages/guest/hotel-details/hotel-details')
+        .then(m => m.HotelDetails)
+  },
+  {
+    path: 'booking-confirm',
+    loadComponent: () =>
+      import('./pages/guest/booking-confirm/booking-confirm')
+        .then(m => m.BookingConfirm)
   }
 
 ];
