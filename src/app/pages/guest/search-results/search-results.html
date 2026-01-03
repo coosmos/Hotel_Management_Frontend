@@ -1,0 +1,75 @@
+<div class="search-results-page">
+    <!-- Sticky Search Bar -->
+    <div class="search-bar-sticky">
+        <app-search-bar (onSearch)="handleSearch($event)" [initialValues]="searchParams">
+        </app-search-bar>
+    </div>
+    <div class="container">
+        <div class="search-info" *ngIf="!loading">
+            <h1>Hotels in {{ searchParams.city }}</h1>
+            <p class="date-range">
+                {{ searchParams.checkInDate }} - {{ searchParams.checkOutDate }}
+            </p>
+            <p class="results-count">{{ hotels.length }} hotels found</p>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Searching for hotels...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !loading" class="error">
+            {{ error }}
+        </div>
+        <div *ngIf="!loading && !error && hotels.length === 0" class="no-results">
+            <h3>No hotels found</h3>
+            <p>Try searching in a different city</p>
+        </div>
+        <div *ngIf="!loading && !error && hotels.length > 0" class="hotel-list">
+            <div *ngFor="let hotel of hotels" class="hotel-card">
+                <div class="hotel-image">
+                    <img [src]="hotel.imageUrl || getDefaultImage()" [alt]="hotel.name"
+                        (error)="$any($event.target).src = getDefaultImage()" />
+                </div>
+                <div class="hotel-details">
+                    <div class="details-header">
+                        <h3>{{ hotel.name }}</h3>
+                        <!-- Placeholder for a details link relative to the design -->
+                        <span class="details-link">Hotel Details</span>
+                    </div>
+
+                    <div class="details-body">
+                        <div class="hotel-meta">
+                            <span class="hotel-address">{{ hotel.address }}, {{ hotel.city }}</span>
+                            <span class="separator">•</span>
+                            <span class="hotel-rating">⭐ {{ hotel.starRating }}/5</span>
+                        </div>
+
+                        <p class="hotel-description">
+                            {{ hotel.description || 'Experience luxury and comfort in the heart of the city.' }}
+                        </p>
+
+                        <div class="hotel-amenities" *ngIf="hotel.amenities">
+                            <span class="amenity-item" *ngFor="let item of hotel.amenities.split(',').slice(0, 4)">
+                                ✓ {{ item }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="details-actions">
+                        <div class="action-info">
+                            <span class="info-label">Availability</span>
+                            <span class="info-value">{{ hotel.availableRooms }} Rooms</span>
+                        </div>
+
+                        <button class="select-btn">
+                            Select
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

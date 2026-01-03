@@ -1,0 +1,51 @@
+<div class="search-container">
+  <div class="search-bar">
+    <!-- Destination Input -->
+    <div class="search-field destination-field">
+      <label for="destination">
+        <span class="field-icon"></span>
+        <span class="field-label">DESTINATION</span>
+      </label>
+      <input
+        type="text"
+        id="destination"
+        [(ngModel)]="searchParams.city"
+        placeholder="Where can we take you?"
+        class="search-input"
+      />
+    </div>
+    <div class="divider"></div>
+    <div class="search-field date-field">
+      <label>
+        <span class="field-icon"></span>
+        <span class="field-label">DATES</span>
+      </label>
+      <div class="date-inputs">
+        <div class="date-input-wrapper">
+          <input
+            type="date"
+            [(ngModel)]="searchParams.checkInDate"
+            [min]="today"
+            (change)="onCheckInChange()"
+            class="date-input"
+          />
+        </div>
+        <span class="date-separator">-</span>
+        <div class="date-input-wrapper">
+          <input
+            type="date"
+            [(ngModel)]="searchParams.checkOutDate"
+            [min]="searchParams.checkInDate || tomorrow"
+            class="date-input"
+          />
+        </div>
+      </div>
+    </div>
+    <button   class="search-button" 
+      (click)="handleSearch()"
+      [disabled]="!isFormValid()" >
+      <span class="button-icon"></span>
+      Find Hotels
+    </button>
+  </div>
+</div>

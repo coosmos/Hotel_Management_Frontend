@@ -3,6 +3,9 @@
   <div class="overlay-vignette"></div>
 
   <div class="hero-content">
+    <div class="search-bar-wrapper">
+      <app-search-bar (onSearch)="handleSearch($event)"></app-search-bar>
+    </div>
     <h1>Seasonal Savings Await</h1>
     <p>Discover hand-picked stays crafted for unforgettable journeys.</p>
     <button class="cta-btn">Book Now</button>
