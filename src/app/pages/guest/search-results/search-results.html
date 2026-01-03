@@ -30,21 +30,20 @@
         <div *ngIf="!loading && !error && hotels.length > 0" class="hotel-list">
             <div *ngFor="let hotel of hotels" class="hotel-card">
                 <div class="hotel-image">
-                    <img [src]="hotel.imageUrl || getDefaultImage()" [alt]="hotel.name"
+                    <img [src]="hotel.imageUrl || getDefaultImage()" [alt]="hotel.hotelName"
                         (error)="$any($event.target).src = getDefaultImage()" />
                 </div>
                 <div class="hotel-details">
                     <div class="details-header">
-                        <h3>{{ hotel.name }}</h3>
-                        <!-- Placeholder for a details link relative to the design -->
+                        <h3>{{ hotel.hotelName }}</h3>
                         <span class="details-link">Hotel Details</span>
                     </div>
 
                     <div class="details-body">
                         <div class="hotel-meta">
                             <span class="hotel-address">{{ hotel.address }}, {{ hotel.city }}</span>
-                            <span class="separator">•</span>
-                            <span class="hotel-rating">⭐ {{ hotel.starRating }}/5</span>
+                            <span class="separator" *ngIf="hotel.starRating">•</span>
+                            <span class="hotel-rating" >⭐5</span>
                         </div>
 
                         <p class="hotel-description">
@@ -61,7 +60,7 @@
                     <div class="details-actions">
                         <div class="action-info">
                             <span class="info-label">Availability</span>
-                            <span class="info-value">{{ hotel.availableRooms }} Rooms</span>
+                            <span class="info-value">{{ hotel.availableRoomsCount }} Rooms</span>
                         </div>
 
                         <button class="select-btn">

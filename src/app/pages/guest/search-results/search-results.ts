@@ -46,7 +46,11 @@ export class SearchResultsComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.hotelService.searchHotels(this.searchParams.city).subscribe({
+    this.hotelService.searchHotels(
+      this.searchParams.city,
+      this.searchParams.checkInDate,
+      this.searchParams.checkOutDate
+    ).subscribe({
       next: (response) => {
         if (response.success) {
           this.hotels = response.data;

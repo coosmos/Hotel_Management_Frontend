@@ -3,24 +3,24 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Hotel {
-  id: number;
-  name: string;
+  hotelId: number;
+  hotelName: string;
   description: string;
   address: string;
   city: string;
   state: string;
   country: string;
   pincode: string;
-  contactNumber: string;
+  contactNumber: string | null;
   email: string;
-  starRating: number;
+  starRating?: number;
   amenities: string;
   status: string;
   totalRooms: number;
-  availableRooms: number;
+  availableRoomsCount: number;
   imageUrl?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ApiResponse<T> {
@@ -39,20 +39,23 @@ export interface SearchParams {
   providedIn: 'root',
 })
 export class HotelService {
-  private apiUrl = 'http://localhost:9090/api/hotels';
+  private apiUrl = 'http://localhost:9090/api';
   constructor(private http: HttpClient) { }
 
   //search hotel by city
-  searchHotels(city: string): Observable<ApiResponse<Hotel[]>> {
-    const params = new HttpParams().set('city', city);
-    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/search`, { params });
+  searchHotels(city: string, checkInDate: string, checkOutDate: string): Observable<ApiResponse<Hotel[]>> {
+    let params = new HttpParams().set('city', city);
+    if (checkInDate) params = params.set('checkInDate', checkInDate);
+    if (checkOutDate) params = params.set('checkOutDate', checkOutDate);
+
+    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/bookings/search-hotels`, { params });
   }
   //get hotel by id
   getHotelById(id: number): Observable<ApiResponse<Hotel>> {
-    return this.http.get<ApiResponse<Hotel>>(`${this.apiUrl}/${id}`);
+    return this.http.get<ApiResponse<Hotel>>(`${this.apiUrl}/hotels/${id}`);
   }
   // get all active hotels
   getAllActiveHotels(): Observable<ApiResponse<Hotel[]>> {
-    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/active`);
+    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/hotels/active`);
   }
 }
