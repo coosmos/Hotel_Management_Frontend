@@ -12,27 +12,38 @@
         </button>
     </div>
 
+    <!-- Error/Success Messages -->
+    <div *ngIf="errorMessage" class="error-message">
+        <span>{{ errorMessage }}</span>
+        <button class="close-btn" (click)="errorMessage = ''">×</button>
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">
+        <span>{{ successMessage }}</span>
+        <button class="close-btn" (click)="successMessage = ''">×</button>
+    </div>
+
     <div [ngSwitch]="currentView">
 
         <!-- Home View -->
         <div *ngSwitchCase="'home'" class="ops-grid">
             <div class="ops-card" (click)="switchView('create-hotel')">
-                <span class="card-icon">🏨</span>
+                <span class="card-icon"><img src="/assets/hotelIcon.png" alt="Create Hotel" srcset=""></span>
                 <h3>Create Hotel</h3>
                 <p>Add new properties</p>
             </div>
             <div class="ops-card" (click)="switchView('view-hotels')">
-                <span class="card-icon">📋</span>
+                <span class="card-icon"><img src="/assets/list (1).png" alt="View Hotels" srcset=""></span>
                 <h3>View Hotels</h3>
                 <p>Manage existing hotels</p>
             </div>
             <div class="ops-card" (click)="switchView('create-user')">
-                <span class="card-icon">👥</span>
+                <span class="card-icon"><img src="/assets/user (1).png" alt="Create Staff" srcset=""></span>
                 <h3>Create Staff</h3>
                 <p>Add Managers & Receptionists</p>
             </div>
             <div class="ops-card" (click)="navigateToAnalytics()">
-                <span class="card-icon">📊</span>
+                <span class="card-icon"><img src="/assets/google-analytics.png" alt="Analytics" srcset=""></span>
                 <h3>Analytics</h3>
                 <p>View system reports</p>
             </div>

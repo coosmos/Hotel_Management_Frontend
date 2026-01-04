@@ -16,6 +16,8 @@ export class AdminOperations implements OnInit {
     currentView: 'home' | 'create-hotel' | 'view-hotels' | 'create-user' = 'home';
     hotels: Hotel[] = [];
     loading: boolean = false;
+    errorMessage: string = '';
+    successMessage: string = '';
 
     hotelForm: FormGroup;
     userForm: FormGroup;
@@ -69,11 +71,13 @@ export class AdminOperations implements OnInit {
             next: (response) => {
                 if (response.success) {
                     this.hotels = response.data;
+                    // Ensure errorMessage is cleared on successful load if desired, 
+                    // or leave it if it's unrelated.
                 }
                 this.loading = false;
             },
             error: (err) => {
-                console.error('Error loading hotels', err);
+                this.handleError(err);
                 this.loading = false;
             }
         });
@@ -83,10 +87,7 @@ export class AdminOperations implements OnInit {
         if (this.hotelForm.invalid) return;
 
         this.loading = true;
-        const hotelData = {
-            name: this.hotelForm.value.hotelName, // mao to hotelDto
-            ...this.hotelForm.value
-        };
+        this.clearMessages();
 
         const payload = {
             ...this.hotelForm.value,
@@ -95,13 +96,17 @@ export class AdminOperations implements OnInit {
 
         this.hotelService.createHotel(payload).subscribe({
             next: (res) => {
-                alert('Hotel created successfully!');
-                this.hotelForm.reset({ status: 'ACTIVE', state: 'NY', country: 'USA', starRating: 5, amenities: 'Wifi, Pool' });
-                this.switchView('view-hotels');
+                this.successMessage = 'Hotel created successfully!';
+                this.hotelForm.reset({ status: 'ACTIVE', state: 'DEL', country: 'INDIA', starRating: 5, amenities: 'Wifi, Pool' });
+                this.loading = false;
+                // Optional: switch view automatically or just show success
+                setTimeout(() => {
+                    this.switchView('view-hotels');
+                    this.successMessage = '';
+                }, 1500);
             },
             error: (err) => {
-                alert('Failed to create hotel');
-                console.error(err);
+                this.handleError(err);
                 this.loading = false;
             }
         });
@@ -111,19 +116,37 @@ export class AdminOperations implements OnInit {
         if (this.userForm.invalid) return;
 
         this.loading = true;
+        this.clearMessages();
+
         this.authService.createUser(this.userForm.value).subscribe({
             next: (res) => {
-                alert('Staff account created successfully!');
+                this.successMessage = 'Staff account created successfully!';
                 this.userForm.reset({ role: 'MANAGER' });
                 this.loading = false;
-                // Stay on page or go details?
             },
             error: (err) => {
-                alert('Failed to create user');
-                console.error(err);
+                this.handleError(err);
                 this.loading = false;
             }
         });
+    }
+
+    handleError(error: any): void {
+        console.error('API Error:', error);
+        if (error.status === 409) {
+            this.errorMessage = error.error?.message || 'Conflict: This record already exists (e.g., email or username).';
+        } else if (error.status === 504) {
+            this.errorMessage = 'Server Gateway Timeout. The server is not responding, please try again later.';
+        } else if (error.status === 403) {
+            this.errorMessage = 'You do not have permission to perform this action.';
+        } else {
+            this.errorMessage = error.error?.message || 'An unexpected error occurred. Please try again.';
+        }
+    }
+
+    clearMessages() {
+        this.errorMessage = '';
+        this.successMessage = '';
     }
 
     navigateToAnalytics() {
