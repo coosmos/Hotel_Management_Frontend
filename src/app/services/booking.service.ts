@@ -32,6 +32,9 @@ export interface BookingResponse {
     checkedOutAt: string | null;
     createdAt: string | null;
     updatedAt: string | null;
+    paymentStatus: string;
+    paymentMethod: string | null;
+    paidAt: string | null;
 }
 
 @Injectable({
@@ -44,5 +47,9 @@ export class BookingService {
 
     createBooking(booking: BookingRequest): Observable<BookingResponse> {
         return this.http.post<BookingResponse>(this.apiUrl, booking);
+    }
+
+    getUserBookings(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/my-bookings`);
     }
 }

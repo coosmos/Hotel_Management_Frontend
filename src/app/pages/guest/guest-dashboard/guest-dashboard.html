@@ -1,1 +1,69 @@
-<p>guest-dashboard works!</p>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>My Bookings</h1>
+        <p>Manage your past and upcoming stays</p>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading your bookings...</p>
+    </div>
+    
+    <div *ngIf="error" class="error-msg">
+        {{ error }}
+        <button (click)="loadBookings()" class="retry-btn">Retry</button>
+    </div>
+    <div *ngIf="!loading && !error" class="bookings-list">
+
+        <div *ngIf="bookings.length === 0" class="empty-state">
+            <div class="empty-icon">🧳</div>
+            <h3>No bookings found</h3>
+            <p>You haven't made any bookings yet.</p>
+            <a routerLink="/" class="browse-btn">Browse Hotels</a>
+        </div>
+
+        <div *ngFor="let booking of bookings" class="booking-card">
+            <div class="booking-header">
+                <div class="hotel-info">
+                    <h3>{{ booking.hotelName }}</h3>
+                    <span class="booking-id">ID: #{{ booking.id }}</span>
+                </div>
+                <span class="status-badge" [ngClass]="getStatusClass(booking.status)">
+                    {{ booking.status }}
+                </span>
+            </div>
+
+            <div class="booking-details">
+                <div class="detail-item">
+                    <span class="label">Check-in</span>
+                    <span class="value">{{ booking.checkInDate | date:'mediumDate' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Check-out</span>
+                    <span class="value">{{ booking.checkOutDate | date:'mediumDate' }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Room</span>
+                    <span class="value">{{ booking.roomType }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Guests</span>
+                    <span class="value">{{ booking.numberOfGuests }} Adults</span>
+                </div>
+            </div>
+
+            <div class="booking-footer">
+                <div class="price-info">
+                    <span class="label">Total Amount</span>
+                    <span class="amount">{{ booking.totalAmount | currency:'INR' }}</span>
+                </div>
+                <div class="payment-status">
+                    <span class="label">Payment:</span>
+                    <span class="value" [class.unpaid]="booking.paymentStatus === 'PENDING'">
+                        {{ booking.paymentStatus }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
