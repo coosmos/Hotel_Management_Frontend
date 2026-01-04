@@ -65,17 +65,44 @@ export class HotelService {
   }
   // get all active hotels
   getAllActiveHotels(): Observable<ApiResponse<Hotel[]>> {
-    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/hotels/active`);
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/hotels/active`).pipe(
+      map(response => ({
+        ...response,
+        data: response.data.map(h => ({
+          ...h,
+          hotelId: h.id, // map id to hotelId
+          hotelName: h.name // map name to hotelName
+        }))
+      }))
+    );
   }
 
   // get all hotels (admin)
   getAllHotels(): Observable<ApiResponse<Hotel[]>> {
-    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/hotels`);
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/hotels`).pipe(
+      map(response => ({
+        ...response,
+        data: response.data.map(h => ({
+          ...h,
+          hotelId: h.id,
+          hotelName: h.name
+        }))
+      }))
+    );
   }
 
   // create hotel
   createHotel(hotel: any): Observable<ApiResponse<Hotel>> {
-    return this.http.post<ApiResponse<Hotel>>(`${this.apiUrl}/hotels`, hotel);
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/hotels`, hotel).pipe(
+      map(response => ({
+        ...response,
+        data: {
+          ...response.data,
+          hotelId: response.data.id,
+          hotelName: response.data.name
+        }
+      }))
+    );
   }
   //get avaialble room types of a hotel
   getAvailableRoomTypes(hotelId: number, checkInDate: string, checkOutDate: string): Observable<RoomType[]> {

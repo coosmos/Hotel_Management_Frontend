@@ -95,7 +95,7 @@
                     <select formControlName="hotelId">
                         <option value="" disabled selected>Select a hotel</option>
                         <option *ngFor="let hotel of hotels" [value]="hotel.hotelId">
-                            {{ hotel.hotelName }} ({{ hotel.city }})
+                            {{ hotel.hotelName }}
                         </option>
                     </select>
                 </div>

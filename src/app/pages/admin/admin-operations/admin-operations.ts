@@ -31,8 +31,8 @@ export class AdminOperations implements OnInit {
             description: ['', Validators.required],
             address: ['', Validators.required],
             city: ['', Validators.required],
-            state: ['NY', Validators.required], // Default for now
-            country: ['USA', Validators.required], // Default
+            state: ['DEL', Validators.required], // Default for now
+            country: ['INDIA', Validators.required], // Default
             pincode: ['10001', Validators.required], // Default
             contactNumber: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
@@ -84,16 +84,10 @@ export class AdminOperations implements OnInit {
 
         this.loading = true;
         const hotelData = {
-            name: this.hotelForm.value.hotelName, // Mapping to backend DTO expectations
+            name: this.hotelForm.value.hotelName, // mao to hotelDto
             ...this.hotelForm.value
         };
 
-        // Explicit mapping if backend requires exact DTO match
-        // Correcting name to hotelName map if needed, typically backend expects 'name' 
-        // but form uses 'hotelName'. Let's adjust form or mapping. 
-        // Based on user prompt: "name": "Grand Plaza Hotel"
-
-        // Adjust payload
         const payload = {
             ...this.hotelForm.value,
             name: this.hotelForm.value.hotelName
