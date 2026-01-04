@@ -1,4 +1,3 @@
-<p>admin-dashboard works!</p>
 <div class="admin-dashboard">
     <div class="dashboard-header">
         <h1>Admin Dashboard</h1>
@@ -21,7 +20,7 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card primary">
-                <div class="stat-icon">💰</div>
+                <div class="stat-icon">[m]</div>
                 <div class="stat-info">
                     <h3>Total Revenue</h3>
                     <p class="stat-value">{{ formatCurrency(dashboardStats.totalRevenue) }}</p>
@@ -29,7 +28,7 @@
             </div>
 
             <div class="stat-card success">
-                <div class="stat-icon">📊</div>
+                <div class="stat-icon">[b]</div>
                 <div class="stat-info">
                     <h3>Total Bookings</h3>
                     <p class="stat-value">{{ dashboardStats.totalBookings }}</p>
@@ -37,7 +36,7 @@
             </div>
 
             <div class="stat-card info">
-                <div class="stat-icon">🏨</div>
+                <div class="stat-icon">[ab]</div>
                 <div class="stat-info">
                     <h3>Active Bookings</h3>
                     <p class="stat-value">{{ dashboardStats.activeBookings }}</p>
@@ -45,7 +44,7 @@
             </div>
 
             <div class="stat-card warning">
-                <div class="stat-icon">⏳</div>
+                <div class="stat-icon">[t]</div>
                 <div class="stat-info">
                     <h3>Pending Payments</h3>
                     <p class="stat-value">{{ dashboardStats.pendingPayments }}</p>
@@ -76,8 +75,6 @@
                 <span class="value">{{ formatCurrency(dashboardStats.averageBookingValue) }}</span>
             </div>
         </div>
-        <!-- ... existing stats cards ... -->
-
         <!-- Revenue Trend Chart -->
         <div class="section">
             <h2>Revenue Trend (Last 30 Days)</h2>
@@ -90,7 +87,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Charts Row -->
         <div class="charts-row">
             <!-- Hotel Revenue Chart -->
