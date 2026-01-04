@@ -2,14 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
-import { Analytics } from '../../../services/analytics';
-import { DashboardAnalytics } from '../../../services/analytics';
-import { HotelAnalytics } from '../../../services/analytics';
-import { RoomTypeAnalytics } from '../../../services/analytics';
-import { RevenueByDate } from '../../../services/analytics';
+import { Analytics, DashboardAnalytics, HotelAnalytics, RoomTypeAnalytics, RevenueByDate } from '../../../services/analytics';
 
 @Component({
   selector: 'app-admin-dashboard',
+  standalone: true,
   imports: [CommonModule, BaseChartDirective],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -27,17 +24,17 @@ export class AdminDashboard implements OnInit {
   // chart configurations
   hotelRevenueChartData: ChartData<'bar'> | null = null;
   hotelRevenueChartOptions: ChartConfiguration<'bar'>['options'];
-  hotelRevenueChartType: ChartType = 'bar';
+  hotelRevenueChartType: 'bar' = 'bar';
 
   roomTypeChartData: ChartData<'doughnut'> | null = null;
   roomTypeChartOptions: ChartConfiguration<'doughnut'>['options'];
-  roomTypeChartType: ChartType = 'doughnut';
+  roomTypeChartType: 'doughnut' = 'doughnut';
 
   revenueLineChartData: ChartData<'line'> | null = null;
   revenueLineChartOptions: ChartConfiguration<'line'>['options'];
-  revenueLineChartType: ChartType = 'line';
+  revenueLineChartType: 'line' = 'line';
 
-  constructor(private analyticsService:Analytics) {
+  constructor(private analyticsService: Analytics) {
     this.initializeChartOptions();
   }
 
@@ -57,7 +54,10 @@ export class AdminDashboard implements OnInit {
         tooltip: {
           callbacks: {
             label: (context) => {
-              return '₹' + context.parsed.y.toLocaleString('en-IN');
+              if (context.parsed.y !== null) {
+                return '₹' + context.parsed.y.toLocaleString('en-IN');
+              }
+              return '';
             }
           }
         }
@@ -67,9 +67,9 @@ export class AdminDashboard implements OnInit {
           beginAtZero: true,
           ticks: {
             callback: (value) => {
-              return '₹' + Number(value).toLocaleString('en-IN', { 
+              return '₹' + Number(value).toLocaleString('en-IN', {
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0 
+                maximumFractionDigits: 0
               });
             }
           }
@@ -109,7 +109,10 @@ export class AdminDashboard implements OnInit {
         tooltip: {
           callbacks: {
             label: (context) => {
-              return context.dataset.label + ': ₹' + context.parsed.y.toLocaleString('en-IN');
+              if (context.parsed.y !== null) {
+                return context.dataset.label + ': ₹' + context.parsed.y.toLocaleString('en-IN');
+              }
+              return '';
             }
           }
         }
@@ -119,9 +122,9 @@ export class AdminDashboard implements OnInit {
           beginAtZero: true,
           ticks: {
             callback: (value) => {
-              return '₹' + Number(value).toLocaleString('en-IN', { 
+              return '₹' + Number(value).toLocaleString('en-IN', {
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0 
+                maximumFractionDigits: 0
               });
             }
           }
@@ -288,9 +291,9 @@ export class AdminDashboard implements OnInit {
           beginAtZero: true,
           ticks: {
             callback: (value) => {
-              return '₹' + Number(value).toLocaleString('en-IN', { 
+              return '₹' + Number(value).toLocaleString('en-IN', {
                 minimumFractionDigits: 0,
-                maximumFractionDigits: 0 
+                maximumFractionDigits: 0
               });
             }
           }

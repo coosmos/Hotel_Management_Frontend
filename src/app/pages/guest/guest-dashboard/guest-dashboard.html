@@ -8,7 +8,7 @@
         <div class="spinner"></div>
         <p>Loading your bookings...</p>
     </div>
-    
+
     <div *ngIf="error" class="error-msg">
         {{ error }}
         <button (click)="loadBookings()" class="retry-btn">Retry</button>
@@ -56,6 +56,11 @@
                 <div class="price-info">
                     <span class="label">Total Amount</span>
                     <span class="amount">{{ booking.totalAmount | currency:'INR' }}</span>
+                </div>
+                <div class="actions" *ngIf="booking.status === 'CONFIRMED'">
+                    <button class="cancel-btn" (click)="cancelBooking(booking.id)">
+                        Cancel Booking
+                    </button>
                 </div>
                 <div class="payment-status">
                     <span class="label">Payment:</span>

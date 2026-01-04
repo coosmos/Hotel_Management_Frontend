@@ -39,6 +39,26 @@ export class GuestDashboard implements OnInit {
     });
   }
 
+  cancelBooking(bookingId: number): void {
+    if (!confirm('Are you sure you want to cancel this booking?')) return;
+
+    this.bookingService.cancelBooking(bookingId).subscribe({
+      next: (response) => {
+        // update the specific booking in the list
+        const bookingIndex = this.bookings.findIndex(b => b.id === bookingId);
+        if (bookingIndex !== -1) {
+          // Optimistic update or fetch updated object if returned
+          this.bookings[bookingIndex].status = 'CANCELLED';
+        }
+        alert('Booking cancelled successfully');
+      },
+      error: (err) => {
+        console.error('Error cancelling booking:', err);
+        alert('Failed to cancel booking');
+      }
+    });
+  }
+
   getStatusClass(status: string): string {
     switch (status) {
       case 'CONFIRMED': return 'status-confirmed';

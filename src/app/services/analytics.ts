@@ -41,7 +41,7 @@ export interface RoomTypeAnalytics {
 })
 export class Analytics {
   private apiUrl = 'http://localhost:9090/api/bookings/analytics';
-  constructor(private http:HttpClient){}
+  constructor(private http: HttpClient) { }
 
   //get hhotel analytics
   getDashboardAnalytics(): Observable<DashboardAnalytics> {
@@ -49,8 +49,14 @@ export class Analytics {
       .pipe(map(response => response.data));
   }
 
+  //get hotel analytics
+  getHotelAnalytics(): Observable<HotelAnalytics[]> {
+    return this.http.get<any>(`${this.apiUrl}/hotels`)
+      .pipe(map(response => response.data));
+  }
+
   //get hotel analytics by id
-   getHotelAnalyticsById(hotelId: number): Observable<HotelAnalytics> {
+  getHotelAnalyticsById(hotelId: number): Observable<HotelAnalytics> {
     return this.http.get<any>(`${this.apiUrl}/hotels/${hotelId}`)
       .pipe(map(response => response.data));
   }
@@ -59,29 +65,29 @@ export class Analytics {
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate);
-    
+
     return this.http.get<any>(`${this.apiUrl}/revenue`, { params })
       .pipe(map(response => response.data));
   }
 
   //get revenue by date range for a hotel
-   getRevenueByDateRangeForHotel(hotelId: number, startDate: string, endDate: string): Observable<RevenueByDate[]> {
+  getRevenueByDateRangeForHotel(hotelId: number, startDate: string, endDate: string): Observable<RevenueByDate[]> {
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate);
-    
+
     return this.http.get<any>(`${this.apiUrl}/hotels/${hotelId}/revenue`, { params })
       .pipe(map(response => response.data));
   }
 
   //get room type analytics
-   getRoomTypeAnalytics(): Observable<RoomTypeAnalytics[]> {
+  getRoomTypeAnalytics(): Observable<RoomTypeAnalytics[]> {
     return this.http.get<any>(`${this.apiUrl}/room-types`)
       .pipe(map(response => response.data));
   }
 
   //get room type analytics for a hotel
-   getRoomTypeAnalyticsForHotel(hotelId: number): Observable<RoomTypeAnalytics[]> {
+  getRoomTypeAnalyticsForHotel(hotelId: number): Observable<RoomTypeAnalytics[]> {
     return this.http.get<any>(`${this.apiUrl}/hotels/${hotelId}/room-types`)
       .pipe(map(response => response.data));
   }

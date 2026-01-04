@@ -1,1 +1,200 @@
 <p>admin-dashboard works!</p>
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p class="subtitle">Overview of hotel management system</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading dashboard...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error">
+        {{ error }}
+    </div>
+    <!-- Dashboard Content -->
+    <div *ngIf="dashboardStats && !loading" class="dashboard-content">
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <h3>Total Revenue</h3>
+                    <p class="stat-value">{{ formatCurrency(dashboardStats.totalRevenue) }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card success">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3>Total Bookings</h3>
+                    <p class="stat-value">{{ dashboardStats.totalBookings }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card info">
+                <div class="stat-icon">🏨</div>
+                <div class="stat-info">
+                    <h3>Active Bookings</h3>
+                    <p class="stat-value">{{ dashboardStats.activeBookings }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card warning">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h3>Pending Payments</h3>
+                    <p class="stat-value">{{ dashboardStats.pendingPayments }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secondary Stats -->
+        <div class="secondary-stats">
+            <div class="stat-item">
+                <span class="label">Completed Bookings</span>
+                <span class="value">{{ dashboardStats.completedBookings }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Cancelled Bookings</span>
+                <span class="value">{{ dashboardStats.cancelledBookings }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Today's Check-ins</span>
+                <span class="value">{{ dashboardStats.todayCheckIns }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Today's Check-outs</span>
+                <span class="value">{{ dashboardStats.todayCheckOuts }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Average Booking Value</span>
+                <span class="value">{{ formatCurrency(dashboardStats.averageBookingValue) }}</span>
+            </div>
+        </div>
+        <!-- ... existing stats cards ... -->
+
+        <!-- Revenue Trend Chart -->
+        <div class="section">
+            <h2>Revenue Trend (Last 30 Days)</h2>
+            <div class="chart-container">
+                <canvas baseChart *ngIf="revenueLineChartData" [data]="revenueLineChartData"
+                    [options]="revenueLineChartOptions" type="line">
+                </canvas>
+                <div *ngIf="!revenueLineChartData" class="no-data">
+                    <p>No revenue data available</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <!-- Hotel Revenue Chart -->
+            <div class="section chart-section">
+                <h2>Hotel Revenue Comparison</h2>
+                <div class="chart-container">
+                    <canvas baseChart *ngIf="hotelRevenueChartData" [data]="hotelRevenueChartData"
+                        [options]="hotelRevenueChartOptions" type="bar">
+                    </canvas>
+                    <div *ngIf="!hotelRevenueChartData" class="no-data">
+                        <p>No hotel data available</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Type Distribution Chart -->
+            <div class="section chart-section">
+                <h2>Room Type Distribution</h2>
+                <div class="chart-container">
+                    <canvas baseChart *ngIf="roomTypeChartData" [data]="roomTypeChartData"
+                        [options]="roomTypeChartOptions" type="doughnut">
+                    </canvas>
+                    <div *ngIf="!roomTypeChartData" class="no-data">
+                        <p>No room type data available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Hotel Performance -->
+        <div class="section">
+            <h2>Hotel Performance</h2>
+            <div class="hotels-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hotel Name</th>
+                            <th>Total Bookings</th>
+                            <th>Active Bookings</th>
+                            <th>Total Revenue</th>
+                            <th>Avg. Booking Value</th>
+                            <th>Revenue Share</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let hotel of hotelAnalytics">
+                            <td class="hotel-name">{{ hotel.hotelName }}</td>
+                            <td>{{ hotel.totalBookings }}</td>
+                            <td>
+                                <span class="badge badge-active">{{ hotel.activeBookings }}</span>
+                            </td>
+                            <td class="revenue">{{ formatCurrency(hotel.totalRevenue) }}</td>
+                            <td>{{ formatCurrency(hotel.averageBookingValue) }}</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill"
+                                        [style.width.%]="getRevenuePercentage(hotel.totalRevenue)">
+                                    </div>
+                                    <span class="progress-text">
+                                        {{ getRevenuePercentage(hotel.totalRevenue).toFixed(1) }}%
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- No Data -->
+                <div *ngIf="hotelAnalytics.length === 0" class="no-data">
+                    <p>No hotel data available</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room Type Analytics -->
+        <div class="section">
+            <h2>Popular Room Types</h2>
+            <div class="room-types-grid">
+                <div *ngFor="let roomType of roomTypeAnalytics" class="room-type-card">
+                    <div class="room-type-header">
+                        <h3>{{ roomType.roomType }}</h3>
+                        <span class="booking-count">{{ roomType.bookingCount }} bookings</span>
+                    </div>
+                    <div class="room-type-stats">
+                        <div class="stat">
+                            <span class="label">Total Revenue</span>
+                            <span class="value">{{ formatCurrency(roomType.totalRevenue) }}</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Avg. Price</span>
+                            <span class="value">{{ formatCurrency(roomType.averagePrice) }}</span>
+                        </div>
+                    </div>
+                    <div class="popularity-bar">
+                        <div class="fill"
+                            [style.width.%]="getBookingPercentage(roomType.bookingCount, dashboardStats!.totalBookings)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Data -->
+                <div *ngIf="roomTypeAnalytics.length === 0" class="no-data">
+                    <p>No room type data available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

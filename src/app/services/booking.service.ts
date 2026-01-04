@@ -49,6 +49,10 @@ export class BookingService {
         return this.http.post<BookingResponse>(this.apiUrl, booking);
     }
 
+    cancelBooking(bookingId: number): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${bookingId}/cancel`, {});
+    }
+
     getUserBookings(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/my-bookings`);
     }
