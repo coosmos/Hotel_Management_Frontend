@@ -67,14 +67,24 @@ export class HotelService {
   getAllActiveHotels(): Observable<ApiResponse<Hotel[]>> {
     return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/hotels/active`);
   }
+
+  // get all hotels (admin)
+  getAllHotels(): Observable<ApiResponse<Hotel[]>> {
+    return this.http.get<ApiResponse<Hotel[]>>(`${this.apiUrl}/hotels`);
+  }
+
+  // create hotel
+  createHotel(hotel: any): Observable<ApiResponse<Hotel>> {
+    return this.http.post<ApiResponse<Hotel>>(`${this.apiUrl}/hotels`, hotel);
+  }
   //get avaialble room types of a hotel
-  getAvailableRoomTypes(hotelId:number,checkInDate:string ,checkOutDate:string):Observable<RoomType[]>{
+  getAvailableRoomTypes(hotelId: number, checkInDate: string, checkOutDate: string): Observable<RoomType[]> {
     const params = new HttpParams()
-    .set('hotelId', hotelId.toString())
-    .set('checkInDate', checkInDate)
-    .set('checkOutDate', checkOutDate);
-  
-  return this.http.get<any>(`${this.apiUrl}/bookings/room-types`, { params })
-    .pipe(map(response => response.data));
+      .set('hotelId', hotelId.toString())
+      .set('checkInDate', checkInDate)
+      .set('checkOutDate', checkOutDate);
+
+    return this.http.get<any>(`${this.apiUrl}/bookings/room-types`, { params })
+      .pipe(map(response => response.data));
   }
 }

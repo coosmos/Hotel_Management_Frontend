@@ -1,0 +1,166 @@
+<div class="admin-ops-container">
+    <div class="header">
+        <div>
+            <h1>Admin Operations</h1>
+            <p *ngIf="currentView === 'home'">Manage hotels, staff, and system settings</p>
+            <p *ngIf="currentView === 'create-hotel'">Add a new hotel to the system</p>
+            <p *ngIf="currentView === 'view-hotels'">View and manage all hotels</p>
+            <p *ngIf="currentView === 'create-user'">Create new staff accounts</p>
+        </div>
+        <button *ngIf="currentView !== 'home'" class="back-btn" (click)="switchView('home')">
+            Back to Dashboard
+        </button>
+    </div>
+
+    <div [ngSwitch]="currentView">
+
+        <!-- Home View -->
+        <div *ngSwitchCase="'home'" class="ops-grid">
+            <div class="ops-card" (click)="switchView('create-hotel')">
+                <span class="card-icon">🏨</span>
+                <h3>Create Hotel</h3>
+                <p>Add new properties</p>
+            </div>
+            <div class="ops-card" (click)="switchView('view-hotels')">
+                <span class="card-icon">📋</span>
+                <h3>View Hotels</h3>
+                <p>Manage existing hotels</p>
+            </div>
+            <div class="ops-card" (click)="switchView('create-user')">
+                <span class="card-icon">👥</span>
+                <h3>Create Staff</h3>
+                <p>Add Managers & Receptionists</p>
+            </div>
+            <div class="ops-card" (click)="navigateToAnalytics()">
+                <span class="card-icon">📊</span>
+                <h3>Analytics</h3>
+                <p>View system reports</p>
+            </div>
+        </div>
+
+        <!-- Create Hotel View -->
+        <div *ngSwitchCase="'create-hotel'" class="form-container">
+            <form [formGroup]="hotelForm" (ngSubmit)="submitHotel()">
+                <div class="form-group">
+                    <label>Hotel Name</label>
+                    <input type="text" formControlName="hotelName" placeholder="e.g. Grand Plaza">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea formControlName="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" formControlName="address">
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" formControlName="city">
+                </div>
+
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" formControlName="contactNumber">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" formControlName="email">
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="submit-btn" [disabled]="loading || hotelForm.invalid">
+                        {{ loading ? 'Creating...' : 'Create Hotel' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Create User View -->
+        <div *ngSwitchCase="'create-user'" class="form-container">
+            <form [formGroup]="userForm" (ngSubmit)="submitUser()">
+                <div class="form-group">
+                    <label>Role</label>
+                    <select formControlName="role">
+                        <option value="MANAGER">Manager</option>
+                        <option value="RECEPTIONIST">Receptionist</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Hotel</label>
+                    <select formControlName="hotelId">
+                        <option value="" disabled selected>Select a hotel</option>
+                        <option *ngFor="let hotel of hotels" [value]="hotel.hotelId">
+                            {{ hotel.hotelName }} ({{ hotel.city }})
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" formControlName="fullName">
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" formControlName="username">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" formControlName="email">
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" formControlName="password">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" formControlName="phoneNumber">
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="submit-btn" [disabled]="loading || userForm.invalid">
+                        {{ loading ? 'Creating...' : 'Create Staff' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- View Hotels View -->
+        <div *ngSwitchCase="'view-hotels'" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let hotel of hotels">
+                        <td>#{{ hotel.hotelId }}</td>
+                        <td>{{ hotel.hotelName }}</td>
+                        <td>{{ hotel.city }}</td>
+                        <td>{{ hotel.starRating }} ⭐</td>
+                        <td>
+                            <span class="badge"
+                                [ngClass]="hotel.status === 'ACTIVE' ? 'badge-active' : 'badge-inactive'">
+                                {{ hotel.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

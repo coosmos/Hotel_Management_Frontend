@@ -15,6 +15,14 @@ export const routes: Routes = [
         .then(m => m.AdminDashboard)
   },
   {
+    path: 'admin/ops',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['ADMIN'] },
+    loadComponent: () =>
+      import('./pages/admin/admin-operations/admin-operations')
+        .then(m => m.AdminOperations)
+  },
+  {
     path: 'manager/dashboard',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['MANAGER'] },

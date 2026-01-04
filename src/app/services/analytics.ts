@@ -43,7 +43,7 @@ export class Analytics {
   private apiUrl = 'http://localhost:9090/api/bookings/analytics';
   constructor(private http: HttpClient) { }
 
-  //get hhotel analytics
+  //get all admin analytics
   getDashboardAnalytics(): Observable<DashboardAnalytics> {
     return this.http.get<any>(`${this.apiUrl}/dashboard`)
       .pipe(map(response => response.data));

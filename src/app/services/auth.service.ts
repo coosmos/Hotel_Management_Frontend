@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private api = 'http://localhost:9090/api/auth';
@@ -12,6 +13,10 @@ export class AuthService {
   }
   register(payload: any) {
     return this.http.post<any>(`${this.api}/register`, payload);
+  }
+
+  createUser(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.api}/create-user`, payload);
   }
 
   handlePostLogin(response: any) {
