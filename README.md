@@ -10,3 +10,50 @@
 <img width="1908" height="931" alt="image" src="https://github.com/user-attachments/assets/57b26e88-3ae9-4ce2-9942-ad9ba0d79c90" />
 <img width="1917" height="934" alt="image" src="https://github.com/user-attachments/assets/402581fc-6ca3-429a-a137-1b0dfabaa0d0" />
 <img width="603" height="854" alt="image" src="https://github.com/user-attachments/assets/ad77805b-2c68-40f5-8edb-7daad00495cb" />
+
+# Hotel Management Frontend
+
+Angular 18 application for the Hotel Management System.
+
+## Features
+
+### Guest
+- **Search**: Search hotels by city and date range.
+- **Booking**: View hotel details, room types, and create bookings.
+- **Dashboard**: View personal booking history and cancel bookings.
+
+### Manager & Receptionist
+- **Dashboard**: View hotel details and operational statistics (total rooms, available rooms, today's check-ins/check-outs).
+- **Booking Management**: List all bookings for the assigned hotel.
+- **Operations**: Perform check-in and check-out actions.
+- **Optimistic Updates**: Dashboard lists update immediately upon action confirmation.
+
+### Admin
+- **Operations**: Manage hotel and user data.
+
+## Technical Implementation
+
+### Core
+- **Framework**: Angular 18 using Standalone Components.
+- **HTTP**: `HttpClient` interaction via dedicated services (`HotelService`, `BookingService`).
+- **Security**: `AuthInterceptor` attaches JWT Bearer token to requests. User context (`X-User-Id`, etc.) is handled by the backend API Gateway.
+
+### Services
+- **HotelService**: Manages hotel data retrieval and mapping. Handles `id` vs `hotelId` property mapping for frontend consistency.
+- **BookingService**: Manages booking operations. Returns typed `BookingResponse` objects including nullable fields.
+
+### State Management
+- **Local State**: Component-level state management with optimistic UI updates in dashboards.
+- **User Store**: `UserStore` service manages local storage persistence for session data.
+
+## Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Run development server:
+   ```bash
+   ng serve
+   ```
+3. Application runs on `http://localhost:4200`.
