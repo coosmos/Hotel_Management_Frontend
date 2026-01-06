@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ApiResponse } from './hotel.service';
 
 export interface BookingRequest {
     hotelId: number;
@@ -15,9 +16,9 @@ export interface BookingRequest {
 
 export interface BookingResponse {
     id: number;
-    hotelName: string;
-    roomNumber: string;
-    roomType: string;
+    hotelName: string | null;
+    roomNumber: string | null;
+    roomType: string | null;
     checkInDate: string;
     checkOutDate: string;
     totalAmount: number;
@@ -53,7 +54,35 @@ export class BookingService {
         return this.http.patch(`${this.apiUrl}/${bookingId}/cancel`, {});
     }
 
-    getUserBookings(): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/my-bookings`);
+    getUserBookings(): Observable<ApiResponse<BookingResponse[]>> {
+        return this.http.get<ApiResponse<BookingResponse[]>>(`${this.apiUrl}/my-bookings`);
+    }
+
+    // Manager/Receptionist Methods
+
+    getHotelBookings(hotelId: number): Observable<BookingResponse[]> {
+        return this.http.get<BookingResponse[]>(`${this.apiUrl}/hotel/${hotelId}`);
+    }
+
+    getTodayCheckIns(hotelId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/hotel/${hotelId}/today-checkins`);
+    }
+
+    getTodayCheckOuts(hotelId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/hotel/${hotelId}/today-checkouts`);
+    }
+
+    checkIn(bookingId: number): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${bookingId}/check-in`, {});
+    }
+
+    checkOut(bookingId: number, feedback: { rating?: number; feedback?: string } = {}): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${bookingId}/check-out`, feedback);
+    }
+
+    updatePaymentStatus(bookingId: number, status: string, method: string): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${bookingId}/payment`, {}, {
+            params: { status, method }
+        });
     }
 }

@@ -114,4 +114,19 @@ export class HotelService {
     return this.http.get<any>(`${this.apiUrl}/bookings/room-types`, { params })
       .pipe(map(response => response.data));
   }
+
+  // get my hotel (for manager/receptionist)
+  getMyHotel(): Observable<ApiResponse<Hotel>> {
+    return this.http.get<ApiResponse<any>>(`${this.apiUrl}/hotels/my-hotel`).pipe(
+      map(response => ({
+        ...response,
+        data: {
+          ...response.data,
+          hotelId: response.data?.id,
+          hotelName: response.data?.name,
+          availableRoomsCount: response.data?.availableRooms // Map availableRooms to availableRoomsCount
+        }
+      }))
+    );
+  }
 }
